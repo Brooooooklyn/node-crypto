@@ -1,0 +1,20 @@
+[package]
+name = "crypto-node"
+version = "0.1.0"
+authors = ["LongYinan <lynweklm@gmail.com>"]
+license = "MIT"
+build = "build.rs"
+
+[lib]
+name = "crypto"
+crate-type = ["dylib"]
+
+[build-dependencies]
+neon-build = "0.1.22"
+
+[dependencies]
+ring = "*"
+hex = "0.3"
+rust-crypto = "0.2"
+neon = "0.1"
+neon-runtime = "0.1"

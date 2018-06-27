@@ -1,0 +1,14 @@
+{
+  "name": "crypto-node",
+  "version": "0.1.0-alpha.0",
+  "description": "",
+  "main": "native/index.node",
+  "author": "LongYinan <lynweklm@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "neon-cli": "^0.1.23"
+  },
+  "scripts": {
+    "build": "neon build"
+  }
+}
