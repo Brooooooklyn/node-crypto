@@ -1,0 +1,6 @@
+native/target
+native/artifacts.json
+native/index.node
+.circleci/
+Dockerfile
+upload.js

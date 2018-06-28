@@ -1,14 +1,20 @@
 {
   "name": "crypto-node",
   "version": "0.1.0-alpha.0",
-  "description": "",
-  "main": "native/index.node",
+  "description": "rust-crypto nodejs bindings",
+  "main": "index.node",
   "author": "LongYinan <lynweklm@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "neon-cli": "^0.1.23"
+    "@google-cloud/storage": "^1.7.0",
+    "neon-cli": "^0.1.23",
+    "semver": "^5.5.0"
   },
   "scripts": {
-    "build": "neon build"
+    "build": "neon build",
+    "install": "node download.js"
+  },
+  "devDependencies": {
+    "request": "^2.87.0"
   }
 }
