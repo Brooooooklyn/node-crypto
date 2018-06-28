@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build-8:
+    machine: true
+    steps:
+      - checkout
+     - run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASS
+     - run: docker build -f Dockerfile-node8 -t broooooklyn/rust-with-node:8 .
+     - run: docker push broooooklyn/rust-with-node:8
+  build-9:
+    machine: true
+    steps:
+      - checkout
+     - run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASS
+     - run: docker build -f Dockerfile-node8 -t broooooklyn/rust-with-node:9 .
+     - run: docker push broooooklyn/rust-with-node:9
+  build-10:
+    machine: true
+    steps:
+      - checkout
+     - run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASS
+     - run: docker build -f Dockerfile-node10 -t broooooklyn/rust-with-node:10 .
+     - run: docker tag broooooklyn/rust-with-node:10 broooooklyn/rust-with-node:latest
+     - run: docker push broooooklyn/rust-with-node:10
+     - run: docker push broooooklyn/rust-with-node:latest
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - image
+
+workflows:
+  version: 2
+  build_all_docker_images:
+    jobs:
+      - build-8
+      - build-9
+      - build-10
