@@ -10,10 +10,10 @@ before_install:
   - brew install rust yarn
 
 jobs:
-  - script:
-    echo $gcp_secret_file > ~/google-secret-file.json && \
-    export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
-    yarn && \
-    yarn build && \
-    node upload.js
+  - script: |
+      echo $gcp_secret_file > ~/google-secret-file.json && \
+      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
+      yarn && \
+      yarn build && \
+      node upload.js
 
