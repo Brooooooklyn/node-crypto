@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "8"
+  - "9"
+  - "10"
+os: osx
+cache: cargo
+before_install:
+  - brew update
+  - brew install rust yarn
+
+jobs:
+  - script:
+    echo $gcp_secret_file > ~/google-secret-file.json && \
+    export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
+    yarn && \
+    yarn build && \
+    node upload.js
+
