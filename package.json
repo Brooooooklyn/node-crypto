@@ -10,5 +10,9 @@
   },
   "scripts": {
     "build": "neon build"
+  },
+  "devDependencies": {
+    "@google-cloud/storage": "^1.7.0",
+    "semver": "^5.5.0"
   }
 }

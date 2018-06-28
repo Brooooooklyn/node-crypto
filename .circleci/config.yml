@@ -45,6 +45,12 @@ jobs:
             yarn && \
             yarn build
       - run:
+          name: Upload binary
+          command: |
+            echo $gcp_secret_file > ~/google-secret-file.json && \
+            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
+            node upload.js
+      - run:
           name: Prune the output files
           command: |
             for file in native/target/release/* native/target/release/.??*; do
@@ -73,6 +79,12 @@ jobs:
           command: |
             yarn && \
             yarn build
+      - run:
+          name: Upload binary
+          command: |
+            echo $gcp_secret_file > ~/google-secret-file.json && \
+            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
+            node upload.js
       - run:
           name: Prune the output files
           command: |
@@ -108,6 +120,12 @@ jobs:
             for file in native/target/release/* native/target/release/.??*; do
               [ -d $file -o ! -x $file ] && rm -r $file
             done
+      - run:
+          name: Upload binary
+          command: |
+            echo $gcp_secret_file > ~/google-secret-file.json && \
+            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
+            node upload.js
       - persist_to_workspace:
           root: "."
           paths:
