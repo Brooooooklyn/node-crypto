@@ -7,13 +7,9 @@ os: osx
 cache: cargo
 before_install:
   - brew update
-  - brew install rust yarn
+  - brew install rust
 
-jobs:
-  - script: |
-      echo $gcp_secret_file > ~/google-secret-file.json && \
-      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
-      yarn && \
-      yarn build && \
-      node upload.js
-
+script: |
+  yarn && \
+  yarn build && \
+  node upload.js

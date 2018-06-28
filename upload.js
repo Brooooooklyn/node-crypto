@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const Storage = require('@google-cloud/storage')
 const semver = require('semver')
 const version = require('./package.json').version
@@ -9,6 +10,14 @@ const storage = new Storage({ projectId })
 const MAJOR_VERSION = semver.parse(process.version).major
 const FILE_NAME = `crypto-node-${ process.platform }-${ MAJOR_VERSION }-${ version }`
 
+const SECRET_FILE_PATH = path.join(process.env.HOME, 'google-secret-file.json')
+
+const secretJson = process.env.GOOGLE_CLOUD_STORAGE_CONFIG ? JSON.parse(decodeURIComponent(process.env.GOOGLE_CLOUD_STORAGE_CONFIG)) : null
+if (secretJson) {
+  fs.writeFileSync(SECRET_FILE_PATH, JSON.stringify(secretJson))
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = SECRET_FILE_PATH
+}
+
 storage
   .bucket('storage.lynvv.xyz')
   .upload('./native/index.node', {
@@ -18,7 +27,7 @@ storage
   }, function (err) {
     if (err) {
       console.error(`ERROR: fail to upload ${ FILE_NAME }`, err)
-      return
+      process.exit(1)
     }
     console.log(`${ FILE_NAME } uploaded.`)
   })
