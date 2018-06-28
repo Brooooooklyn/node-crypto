@@ -7,7 +7,7 @@ const projectId = 'cloud-9-183315'
 
 const storage = new Storage({ projectId })
 const MAJOR_VERSION = semver.parse(process.version).major
-const FILE_NAME = `crypto-node-linux-${ MAJOR_VERSION }-${ version }`
+const FILE_NAME = `crypto-node-${ process.platform }-${ MAJOR_VERSION }-${ version }`
 
 storage
   .bucket('storage.lynvv.xyz')
