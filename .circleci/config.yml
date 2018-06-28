@@ -1,0 +1,149 @@
+version: 2
+jobs:
+  cargo_fetch:
+    docker:
+      - image: broooooklyn/rust-with-node:latest
+    working_directory: /mnt/crate
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - cargo-v1-{{ checksum "native/Cargo.toml" }}-
+            - cargo-v1-
+      - run:
+          name: fetch and update
+          command: |
+            cd native && \
+            cargo update && \
+            cargo fetch
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - native/Cargo.lock
+      - save_cache:
+          key: cargo-v1-{{ checksum "native/Cargo.toml" }}-{{ checksum "native/Cargo.lock" }}
+          paths:
+            - /usr/local/cargo/registry
+            - /usr/local/cargo/git
+  build8:
+    docker:
+      - image: broooooklyn/rust-with-node:8
+    working_directory: /mnt/crate
+    steps:
+      - checkout
+      - attach_workspace:
+          at: "."
+      - restore_cache:
+          keys:
+            - cargo-v1-{{ checksum "native/Cargo.toml" }}-{{ checksum "native/Cargo.lock" }}
+      - run:
+          name: Print version information
+          command: rustc --version; cargo --version
+      - run:
+          name: Build 8
+          command: |
+            yarn && \
+            yarn build
+      - run:
+          name: Prune the output files
+          command: |
+            for file in native/target/release/* native/target/release/.??*; do
+              [ -d $file -o ! -x $file ] && rm -r $file
+            done
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - native/target/release/*
+  build9:
+    docker:
+      - image: broooooklyn/rust-with-node:9
+    working_directory: /mnt/crate
+    steps:
+      - checkout
+      - attach_workspace:
+          at: "."
+      - restore_cache:
+          keys:
+            - cargo-v1-{{ checksum "native/Cargo.toml" }}-{{ checksum "native/Cargo.lock" }}
+      - run:
+          name: Print version information
+          command: rustc --version; cargo --version
+      - run:
+          name: Build and test in release profile
+          command: |
+            yarn && \
+            yarn build
+      - run:
+          name: Prune the output files
+          command: |
+            for file in native/target/release/* native/target/release/.??*; do
+              [ -d $file -o ! -x $file ] && rm -r $file
+            done
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - native/target/release/*
+  build10:
+    docker:
+      - image: broooooklyn/rust-with-node:10
+    working_directory: /mnt/crate
+    steps:
+      - checkout
+      - attach_workspace:
+          at: "."
+      - restore_cache:
+          keys:
+            - cargo-v1-{{ checksum "native/Cargo.toml" }}-{{ checksum "native/Cargo.lock" }}
+      - run:
+          name: Print version information
+          command: rustc --version; cargo --version
+      - run:
+          name: Build and test in release profile
+          command: |
+            yarn && \
+            yarn build
+      - run:
+          name: Prune the output files
+          command: |
+            for file in native/target/release/* native/target/release/.??*; do
+              [ -d $file -o ! -x $file ] && rm -r $file
+            done
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - native/target/release/*
+
+  nightly:
+    machine: true
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    steps:
+      - checkout
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker build . -t broooooklyn/rust-with-node:8 --build-arg NODE_VERSION=8
+      - run: docker push broooooklyn/rust-with-node:8
+      - run: docker build . -t broooooklyn/rust-with-node:9 --build-arg NODE_VERSION=9
+      - run: docker push broooooklyn/rust-with-node:9
+      - run: docker build . -t broooooklyn/rust-with-node:10 --build-arg NODE_VERSION=10
+      - run: docker tag broooooklyn/rust-with-node:10 broooooklyn/rust-with-node:latest
+      - run: docker push broooooklyn/rust-with-node:10
+      - run: docker push broooooklyn/rust-with-node:latest
+workflows:
+  version: 2
+  build_all_versions:
+    jobs:
+      - cargo_fetch
+      - build8:
+          requires:
+            - cargo_fetch
+      - build9:
+          requires:
+            - cargo_fetch
+      - build10:
+          requires:
+            - cargo_fetch
