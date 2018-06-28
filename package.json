@@ -1,7 +1,7 @@
 {
   "name": "crypto-node",
   "version": "0.1.0-alpha.0",
-  "description": "",
+  "description": "rust-crypto nodejs bindings",
   "main": "index.node",
   "author": "LongYinan <lynweklm@gmail.com>",
   "license": "MIT",
@@ -13,5 +13,8 @@
   "scripts": {
     "build": "neon build",
     "install": "node download.js"
+  },
+  "devDependencies": {
+    "request": "^2.87.0"
   }
 }
