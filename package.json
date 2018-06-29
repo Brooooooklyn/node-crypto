@@ -5,6 +5,7 @@
   "main": "index.node",
   "author": "LongYinan <lynweklm@gmail.com>",
   "license": "MIT",
+  "types": "index.d.ts",
   "dependencies": {
     "@google-cloud/storage": "^1.7.0",
     "neon-cli": "^0.1.23",
