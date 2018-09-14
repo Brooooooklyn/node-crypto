@@ -1,0 +1,60 @@
+environment:
+  GOOGLE_CLOUD_STORAGE_CONFIG:
+    secure: QgxsZAiAiq26IsxbkAKNhej0fUtA4lrxCdLYZT9JHXqIaD0jtocikUziBM9KIZGstsu/hhTBvDynsuNCyZ8CXdmtr0tS0wA/7zSWbFPC60B3AHltgHVdgcj1AGGW/02jItFak6GRs5ibtob//AfJ40Vi50xwnIwCiC1IsXyZxkmqBHqTCy7R1M93UJE2NsEotmC35AY5F4JiOqE/3X3elOdaRD/MuM5rimOVqCLsqJggxiffV1PQp1/9/FWAPwiUc7ZPwK3MVrC4RkqLBOYSqkRB1d8Wu43zlg+N0cAz6KJfhKgs36Ttw1CNqgwqwtU0/oawrsIYClKPcFEVk+uEEUfcYahLkCHYJZ6ukMJmQFyQiFwxJwoaxuoDPYkKb64DhF7Nj1k/l4ornz2nX/jTzlMKs5WoCwJSjq3Oubr/j94OxWuJNi41nkeG5uGr1q2xpt8m7D8COeAkI4NNLSDu+nhRO6JWH4HL6ynHWWyHCHbs0qs9mEJ2E3KOVDhdECdriCv1MH2WvaCDWOeqnsi43iqiJUXMaYkN6A+NC9F7Qlv+5AYH7wpTod9Av4lt08WvAd0BgoR6mSwVHh5868AW3PPnXZ28VYY1IV2RTJNXrhbBHR/eNbxfTFiKhF6Qe0s71sZopsFIyv72RNExzKVr37g1Nxh476qJZmytZetOatMO9JQzlqiDWl6xyYqQ0kxqaUeEONIvGzU3+nbHrR+ufT83ZxB2iBJWCux67p7ZZSGltFq7s2o2BZJWXnh9LKNd3693b0aTsy1HK/Wapnu6ak42lE0sPdiXaulnXr6/NYOE6Z5Xe0hdqn3O0dSHzjady+vsORcmevPkOVMNqmegwCBTiHfFWapYRRISwDy43PMFLuxFUv+QsmpyMz/aOhhT4OHD41W2Q16lauf0ngRArLIiHSqxuILsegH94D1y2QycD+H/4xYBrjKnc7u1FhMWVs0q43yF7GvzuvTGpxIbXybn3oq0uI/0BzCee0LwgccFraR4cVvNJI2QHq7BwWBrQgGINiJunMkGcAi3LCMumGllW1iCLfUZGUa49Ufb3IG6qL6iFlxeA8AEj+MwdAwVMrSpb7OECGJbm/w0acBPGV5HiNESeb+XruA9hI4+hxg5qE95x15FHprlp6e8mwcBB267gQSEtz3aqjJlZs6jWlJxxIMwa5ZWAFPasScFNis2QZ97qSzRGMceslbpt7I3VYLTpdCtn5PsjEz1JNL7Q9RI+3p+zktGfk4Yl5OVXG9dUvGJNIljarQfMvmn4cS4ILgsUDMjGMxPpZKvlAXP/v7wgGEpRFmqZ5VJ4myNBE9Jns/wW1dwSi5F9mDDV33QDkeuB6Znrstetxj8JKMVWOJrHGZSTa3eCr7IRtrPSrhh7qevzorYBQEesohMzEyde1Vo4xuxXRJRSnHhomSUlFVVkm5nhEWoXd06efQ0dBOJGKjw9lIUmFE5lUs/cC2tNX13LuK3eUj8eJoetnyEb0YdoHkpL5f7bWhAcx74DE8TbUnKE7CX9S41sosaATDVCJ2FhQyx63MKGlbHzkAoDCrOxTx4zSCTIxnC1t0JyApTYkmDQAXtSWxVfl3pV8Lsu64pSEzK+uZNl5y2WMphZOYCCqc3d+eat0WvtcXc1amavwGfCnigBzAXeb+tj9pIj7lxUY+r3flcV/Mkrl6iLTYm4xAQKuPsYYwpHLhPI6UYXlB/pX6sW3XZBmezh63de3EHLxxI0XmI9Rj05VxzuNMesENc2bx/iBdsD8amLRWwPVwCOrLn1IXpgbvZDWz/enmWh2ur8a36Y+PWsjM7Uzxe7VwK7O3y4ZT3KZS3bS7pO9vGKg8gsJ4QQ+bEBmnIB99cBedqcdJ9gNkFb1FD0VqZhokt8ooaeR5GRQRoesx0vSUd+0ghLtQeMUBraxCkoP2hUGIPbGfDq3Ly/DofvDAF+OpR8S2GoeuV/OFm0zuqwyihdTgtzSAr2sR9Ldr96jlcP7ew6RzPtnPj4Xn7TuJideU1GSU9r5DXF0S9xS5qXS2Kupd8QRaDxIuMXk1KuiqjmDd5Srw9WuUx7OD9i+9C6sErmiug12R9qqRu3JHwioX2bFx4cTmyma9uhQYobSwzMJVhF7qx3aEKa8qUUuD4MWeZyXxy4a0rXe2aUZj3YwV/Vf0UWj1+YfnZ5lE1/QOcDANQ0J0SErFkxArFniOAy6rFgu+0Wvo/5mpySOipWD6wILcdfJY81CT2dXoRhVcV6FFTqY/tbcVb++9lrLKOSjaQkY5SGeDgKOihPlUl6kBaDY7duBR6l05ydXcxhO2GriOtiTK1JM2WWCOa6N7kbWc/dwWrjmwV/xof8aRlIvPPwxNW8i7Z9BPUyxrq9+8v7BZpz/lItYrUxoxPWABO0HMtB7JmwSMtT/tM4p9K0I9nU/Nbl0tH9j8QgYvy5xNBMnaF/Z682Di4nj3t5syedV1L8Vrn3vtlq5VoAb0ud+mXwus89kXgO5nrcNwm4tCe4r1yObFBjepZ3kSjd/wdX/jmzR/dXSIZIjhzZLh62tPBBQcvZWuIZZv4o5ht1hrlDZCTM203+eXwPLhOjQgE/19S9jf8EZfBDY433knuydm6fZUepPPwCiCZcYJ6krHjQCAOkuJQFL4VyC29kxWEyH6w+7ynGgmNXl88CmVbSMGtwR59VqMuyaNQITlLhO8VBKg2vl6iTLNDL22TZqH7jpqje/O5mn4wnDIeKnyCrMFF9O5oAThoP+l1Q5DD0ctRvfSz1bLqQJYRv28dpptktAybPPuSdiOyF+BlwjXXLIktNkl6qYTGDSszvSsnxFay+IxZnoILlOFBOKflyrJ8GJN6MF/7yMIDE5k3m6Xl2iWOq8kuZASTgunB6DIn9UGRUiCyl/Cmqb5Xog61vWXT59zMwuSSsCjHH54EZriE3TU6jDYCTyUIR7svyBH+o6wQnzVruB92w0huEf5BKpkTbd/MchRJ+wDtA799DEGGEsiIa86EwgmHMvNzvh5hi2NTMdEMvIISUf5EiMe05tLnaK3ajSANj9T9ZzBuu+A8Licbb9/iauzU4aNFEo662vln4I/r6LQWm3vGeBtfR0h8mCzYx9d+48FZcgI0jz5UtEghl5UmHXqdETyzZVa7YbdTxMQ+jPfwtqSVBGoHA7F2omx8dG0k3PLW+RkFSQjpWT55OhY6MQGpH3jdneUYOlTx/eU3of+6MdyJP8QD6QPdvZ2+N6J4YVxuqOLSr/mPM5W7Jxd7kGEQ1NBjbT9B+0+pIDAk76oXkU5WRjBnuiP33VWE0lHu1jJL147pXLxJ844r5CoEoYaoWDkgwwl+oGGfSbmFH3vomywzAg59wT31WwDi/NkANnPRZ/P+P6Sqr5H77takMSRxKF2ErLxMoDf7DHgKiiGOwAtf6/C2jpfAP+WmjItAcwIAfSY0bDbMNKu8zHWN/SmD/rq+LTXhGQtyUWD5JflpkhRQ3+/B+1+OKhqHSjnJzRCmlkX8BFx4i0YfMWlQxPuyKwlrTKJOFeDRNn8fdqsYHgmMB0NFlE6TsqOLbhGaEwyft9pAzroEtoA+paB7GCTs0EseZy5CSvH2B/kopyUDisLHs3gYAKdBQ+fpKNattSOcnPLwucnWuQsTbj6iu5ZUdZQG18Yk 
+
+  matrix:
+    - BITS: 32
+      ARC: "x86"
+    - BITS: 64
+      ARC: "x64"
+
+install:
+  - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+  - sh: ./appveyor-tools/secure-file -decrypt "$HOME/google-secret-file.json" -secret $GOOGLE_CLOUD_STORAGE_CONFIG
+  - SET GOOGLE_APPLICATION_CREDENTIALS=%HOME%\google-secret-file.json
+  - IF "%BITS%" == "32" SET ARCH=i686
+  - IF "%BITS%" == "64" SET ARCH=x86_64
+  - curl -sSf -o rustup-init.exe https://win.rustup.rs
+  - rustup-init.exe --default-host "%ARCH%-pc-windows-gnu" --default-toolchain stable -y
+  - rustc -Vv
+  - cargo -Vv
+  - yarn
+
+cache:
+  - target
+
+build_script:
+  - "Install-Product node 8 %ARC%"
+  - node -v
+  - yarn build
+  - node tools\appveyor-scripts.js
+  - "Install-Product node 9 %ARC%"
+  - node -v
+  - yarn build
+  - node tools\appveyor-scripts.js
+  - "Install-Product node 10 %ARC%"
+  - node -v
+  - yarn build
+  - node tools\appveyor-scripts.js
+
+after_test:
+  - ls dist
+
+artifacts:
+  - path: dist\*.node
+    name: Binary
+
+before_deploy:
+  - "node tools\upload.js"
+
+deploy:
+  provider: GitHub
+  description: $(APPVEYOR_REPO_TAG_NAME)
+  auth_token:
+    secure: WOwBw2Tzivslwkbev6rJfhZfUbcfRvENwqQZfRZBL5R6L+Cb0y2tv5lyobrZiWPq
+  artifact: Binary
+  draft: false
+  prerelease: false
+  on:
+    branch: master # release from master branch only
+    appveyor_repo_tag: true # deploy on tag push only

@@ -1,12 +1,9 @@
 const fs = require('fs')
-const version = require('./package.json').version
 const request = require('request')
-const semver = require('semver')
 const child_process = require('child_process')
+const FILE_NAME = require('./filename')
 
-const MAJOR_VERSION = semver.parse(process.version).major
 const HOST = 'https://storage.googleapis.com/storage.lynvv.xyz'
-const FILE_NAME = `crypto-node-${ process.platform }-${ MAJOR_VERSION }-${ version }.node`
 
 request.get(`${ HOST }/${ FILE_NAME }`)
   .pipe(

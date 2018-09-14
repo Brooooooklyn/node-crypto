@@ -4,3 +4,8 @@ native/index.node
 .circleci/
 Dockerfile
 upload.js
+.editorconfig
+.travis.yml
+appveyor.yml
+yarn.lock
+dist

@@ -42,7 +42,7 @@ deploy: &deploy
           if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
           then
             echo $gcp_secret_file > ~/google-secret-file.json && \
-            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json"; node upload.js && \
+            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json"; node tools/upload.js && \
             export GIT_TAG="$(git describe --tags $(git rev-list --tags --max-count=1))"; \
             ghr -u "${CIRCLE_PROJECT_USERNAME}" -r "${CIRCLE_PROJECT_REPONAME}" "${GIT_TAG}" dist/*.node
           else

@@ -15,7 +15,7 @@ script: |
 
 deploy:
   - provider: script
-    script: node upload.js
+    script: node tools/upload.js
     skip_cleanup: true
     on:
       tags: true
