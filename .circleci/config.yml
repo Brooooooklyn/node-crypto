@@ -1,3 +1,54 @@
+build: &build
+  working_directory: /mnt/crate
+  steps:
+    - checkout
+    - attach_workspace:
+        at: "."
+    - restore_cache:
+        keys:
+          - cargo-v1-{{ checksum "native/Cargo.toml" }}-{{ checksum "native/Cargo.lock" }}
+    - run:
+        name: Print version information
+        command: rustc --version; cargo --version
+    - run:
+        name: Build
+        command: |
+          yarn && \
+          yarn build
+    - run:
+        name: Prune the output files
+        command: |
+          for file in native/target/release/* native/target/release/.??*; do
+            [ -d $file -o ! -x $file ] && rm -r $file
+          done
+    - persist_to_workspace:
+        root: "."
+        paths:
+          - native/target/release/*
+
+deploy: &deploy
+  docker:
+    - image: broooooklyn/rust-with-node:latest
+  working_directory: /mnt/crate
+  steps:
+    - attach_workspace:
+        at: "."
+    - run:
+        name: "Install Requirements"
+        command: yarn
+    - run:
+        name: "Deploy to Github Release"
+        command: |
+          if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
+          then
+            echo $gcp_secret_file > ~/google-secret-file.json && \
+            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json"; node upload.js && \
+            export GIT_TAG="$(git describe --tags $(git rev-list --tags --max-count=1))"; \
+            ghr -u "${CIRCLE_PROJECT_USERNAME}" -r "${CIRCLE_PROJECT_REPONAME}" "${GIT_TAG}" dist/*.node
+          else
+            echo "Not a release, skipping publish"
+          fi
+
 version: 2
 jobs:
   cargo_fetch:
@@ -26,110 +77,25 @@ jobs:
             - /usr/local/cargo/registry
             - /usr/local/cargo/git
   build8:
+    <<: *build
     docker:
       - image: broooooklyn/rust-with-node:8
-    working_directory: /mnt/crate
-    steps:
-      - checkout
-      - attach_workspace:
-          at: "."
-      - restore_cache:
-          keys:
-            - cargo-v1-{{ checksum "native/Cargo.toml" }}-{{ checksum "native/Cargo.lock" }}
-      - run:
-          name: Print version information
-          command: rustc --version; cargo --version
-      - run:
-          name: Build 8
-          command: |
-            yarn && \
-            yarn build
-      - run:
-          name: Upload binary
-          command: |
-            echo $gcp_secret_file > ~/google-secret-file.json && \
-            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
-            node upload.js
-      - run:
-          name: Prune the output files
-          command: |
-            for file in native/target/release/* native/target/release/.??*; do
-              [ -d $file -o ! -x $file ] && rm -r $file
-            done
-      - persist_to_workspace:
-          root: "."
-          paths:
-            - native/target/release/*
+    
   build9:
+    <<: *build
     docker:
       - image: broooooklyn/rust-with-node:9
-    working_directory: /mnt/crate
-    steps:
-      - checkout
-      - attach_workspace:
-          at: "."
-      - restore_cache:
-          keys:
-            - cargo-v1-{{ checksum "native/Cargo.toml" }}-{{ checksum "native/Cargo.lock" }}
-      - run:
-          name: Print version information
-          command: rustc --version; cargo --version
-      - run:
-          name: Build and test in release profile
-          command: |
-            yarn && \
-            yarn build
-      - run:
-          name: Upload binary
-          command: |
-            echo $gcp_secret_file > ~/google-secret-file.json && \
-            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
-            node upload.js
-      - run:
-          name: Prune the output files
-          command: |
-            for file in native/target/release/* native/target/release/.??*; do
-              [ -d $file -o ! -x $file ] && rm -r $file
-            done
-      - persist_to_workspace:
-          root: "."
-          paths:
-            - native/target/release/*
+    
   build10:
+    <<: *build
     docker:
       - image: broooooklyn/rust-with-node:10
-    working_directory: /mnt/crate
-    steps:
-      - checkout
-      - attach_workspace:
-          at: "."
-      - restore_cache:
-          keys:
-            - cargo-v1-{{ checksum "native/Cargo.toml" }}-{{ checksum "native/Cargo.lock" }}
-      - run:
-          name: Print version information
-          command: rustc --version; cargo --version
-      - run:
-          name: Build and test in release profile
-          command: |
-            yarn && \
-            yarn build
-      - run:
-          name: Prune the output files
-          command: |
-            for file in native/target/release/* native/target/release/.??*; do
-              [ -d $file -o ! -x $file ] && rm -r $file
-            done
-      - run:
-          name: Upload binary
-          command: |
-            echo $gcp_secret_file > ~/google-secret-file.json && \
-            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/google-secret-file.json" && \
-            node upload.js
-      - persist_to_workspace:
-          root: "."
-          paths:
-            - native/target/release/*
+
+  deploy8: *deploy
+
+  deploy9: *deploy
+
+  deploy10: *deploy
 
   nightly:
     machine: true

@@ -2,6 +2,8 @@ FROM rust:latest
 
 ARG NODE_VERSION=8
 
+ENV GHR_VERSION="0.9.0"
+
 RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
   apt-get install -y nodejs \
   cmake gcc g++ make && \
@@ -9,3 +11,11 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
   apt-get update && \
   apt-get install apt-transport-https yarn -y
+
+RUN curl -fSL -o ghr.tar.gz "https://github.com/tcnksm/ghr/releases/download/v${GHR_VERSION}/ghr_v${GHR_VERSION}_linux_amd64.tar.gz" && \
+    tar -xvzf ghr.tar.gz && \
+    mv ghr_v${GHR_VERSION}_linux_amd64/ghr /usr/local/bin && \
+    chown root:root /usr/local/bin/ghr && \
+    rm -r \
+        ghr.tar.gz \
+        ghr_v${GHR_VERSION}_linux_amd64
