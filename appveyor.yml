@@ -12,14 +12,15 @@ install:
   - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
   - sh: ./appveyor-tools/secure-file -decrypt "$HOME/google-secret-file.json" -secret $GOOGLE_CLOUD_STORAGE_CONFIG
   - SET GOOGLE_APPLICATION_CREDENTIALS=%HOME%\google-secret-file.json
-  - SET PATH=C:\Users\appveyor\.cargo\bin;C:\msys64\mingw%BITS%\bin;%PATH%;C:\msys64\usr\bin;
   - IF "%BITS%" == "32" SET ARCH=i686
   - IF "%BITS%" == "64" SET ARCH=x86_64
   - curl -sSf -o rustup-init.exe https://win.rustup.rs
   - rustup-init.exe --default-host "%ARCH%-pc-windows-gnu" --default-toolchain stable -y
+  - SET PATH=C:\Users\appveyor\.cargo\bin;C:\msys64\mingw%BITS%\bin;%PATH%;C:\msys64\usr\bin;
+  - rustup target add %ARCH%-pc-windows-msvc
   - rustc -Vv
   - cargo -Vv
-  - yarn
+  - yarn --ignore-scripts
 
 cache:
   - target
