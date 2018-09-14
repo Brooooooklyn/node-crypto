@@ -125,9 +125,33 @@ workflows:
       - build8:
           requires:
             - cargo_fetch
+      - deploy8:
+          requires:
+            - build8
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
       - build9:
           requires:
             - cargo_fetch
+      - deploy9:
+          requires:
+            - build9
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
       - build10:
           requires:
             - cargo_fetch
+      - deploy10:
+          requires:
+            - build10
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master

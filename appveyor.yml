@@ -26,15 +26,15 @@ cache:
   - target
 
 build_script:
-  - "Install-Product node 8 %ARC%"
+  - ps: Install-Product node 8 $env:ARC
   - node -v
   - yarn build
   - node tools\appveyor-scripts.js
-  - "Install-Product node 9 %ARC%"
+  - ps: Install-Product node 9 $env:ARC
   - node -v
   - yarn build
   - node tools\appveyor-scripts.js
-  - "Install-Product node 10 %ARC%"
+  - ps: Install-Product node 10 $env:ARC
   - node -v
   - yarn build
   - node tools\appveyor-scripts.js

@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const Storage = require('@google-cloud/storage')
+const { Storage } = require('@google-cloud/storage')
 const { execSync } = require('child_process')
 
 const FILE_NAME = require('./filename')
