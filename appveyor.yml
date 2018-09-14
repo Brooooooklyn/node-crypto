@@ -45,7 +45,7 @@ artifacts:
     name: Binary
 
 before_deploy:
-  - "node tools\upload.js"
+  - node tools\upload.js
 
 deploy:
   provider: GitHub
