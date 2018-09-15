@@ -9,12 +9,14 @@ const projectId = 'cloud-9-183315'
 
 const storage = new Storage({ projectId })
 
-const SECRET_FILE_PATH = path.join(process.env.HOME, 'google-secret-file.json')
+if (!GOOGLE_APPLICATION_CREDENTIALS) {
+  const SECRET_FILE_PATH = path.join(process.env.HOME, 'google-secret-file.json')
 
-const secretJson = process.env.GOOGLE_CLOUD_STORAGE_CONFIG ? JSON.parse(decodeURIComponent(process.env.GOOGLE_CLOUD_STORAGE_CONFIG)) : null
-if (secretJson) {
-  fs.writeFileSync(SECRET_FILE_PATH, JSON.stringify(secretJson))
-  process.env.GOOGLE_APPLICATION_CREDENTIALS = SECRET_FILE_PATH
+  const secretJson = process.env.GOOGLE_CLOUD_STORAGE_CONFIG ? JSON.parse(decodeURIComponent(process.env.GOOGLE_CLOUD_STORAGE_CONFIG)) : null
+  if (secretJson) {
+    fs.writeFileSync(SECRET_FILE_PATH, JSON.stringify(secretJson))
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = SECRET_FILE_PATH
+  }
 }
 
 execSync(`mkdir -p dist && cp ./native/index.node ./dist/${FILE_NAME}`, {
