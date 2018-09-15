@@ -1,7 +1,13 @@
-const { execSync } = require('child_process')
+const fs = require('fs')
 const filename = require('./filename')
 
-execSync(`mkdir -p dist && cp native/index.node dist/${filename}`, {
-  env: process.env,
-  stdio: [0, 1, 2],
-})
+try {
+  if (!fs.existsSync('./dist')) {
+    fs.mkdirSync('./dist')
+  }
+
+  fs.copyFileSync('./native/index.node', `./dist/${filename}`)
+} catch (e) {
+  console.error(e)
+  process.exit(101)
+}
