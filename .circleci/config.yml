@@ -27,8 +27,6 @@ build: &build
           - ./*
 
 deploy: &deploy
-  docker:
-    - image: broooooklyn/rust-with-node:latest
   working_directory: /mnt/crate
   steps:
     - attach_workspace:
@@ -91,11 +89,20 @@ jobs:
     docker:
       - image: broooooklyn/rust-with-node:10
 
-  deploy8: *deploy
+  deploy8:
+    <<: *deploy
+    docker:
+      - image: broooooklyn/rust-with-node:8
 
-  deploy9: *deploy
+  deploy9:
+    <<: *deploy
+    docker:
+      - image: broooooklyn/rust-with-node:9
 
-  deploy10: *deploy
+  deploy10:
+    <<: *deploy
+    docker:
+      - image: broooooklyn/rust-with-node:10
 
   nightly:
     machine: true
