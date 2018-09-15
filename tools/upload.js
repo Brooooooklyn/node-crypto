@@ -9,7 +9,7 @@ const projectId = 'cloud-9-183315'
 
 const storage = new Storage({ projectId })
 
-if (!GOOGLE_APPLICATION_CREDENTIALS) {
+if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   const SECRET_FILE_PATH = path.join(process.env.HOME, 'google-secret-file.json')
 
   const secretJson = process.env.GOOGLE_CLOUD_STORAGE_CONFIG ? JSON.parse(decodeURIComponent(process.env.GOOGLE_CLOUD_STORAGE_CONFIG)) : null
