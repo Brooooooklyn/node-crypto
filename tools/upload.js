@@ -19,10 +19,11 @@ if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   }
 }
 
-if (!process.platform === 'win32') {
+if (process.platform !== 'win32') {
   execSync(`mkdir -p dist && cp ./native/index.node ./dist/${FILE_NAME}`, {
     env: process.env,
     stdio: [0, 1, 2],
+    cwd: process.cwd(),
   })
 }
 
