@@ -13,7 +13,10 @@
     "semver": "^5.5.1"
   },
   "scripts": {
-    "build": "neon build --release",
+    "build": "yarn && neon build --release",
     "install": "node tools/download.js"
+  },
+  "devDependencies": {
+    "node-gyp": "^3.8.0"
   }
 }

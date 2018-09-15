@@ -28,14 +28,17 @@ cache:
 build_script:
   - ps: Install-Product node 8 $env:ARC
   - node -v
+  - npm i -g npm
   - yarn build
   - node tools\appveyor-scripts.js
   - ps: Install-Product node 9 $env:ARC
   - node -v
+  - npm i -g npm
   - yarn build
   - node tools\appveyor-scripts.js
   - ps: Install-Product node 10 $env:ARC
   - node -v
+  - npm i -g npm
   - yarn build
   - node tools\appveyor-scripts.js
 

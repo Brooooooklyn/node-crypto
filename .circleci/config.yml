@@ -24,7 +24,7 @@ build: &build
     - persist_to_workspace:
         root: "."
         paths:
-          - native/target/release/*
+          - ./*
 
 deploy: &deploy
   docker:
