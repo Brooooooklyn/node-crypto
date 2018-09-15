@@ -1,4 +1,8 @@
 # crypto-node
+[![Build Status](https://travis-ci.com/Brooooooklyn/node-crypto.svg?branch=master)](https://travis-ci.com/Brooooooklyn/node-crypto)
+[![CircleCI](https://circleci.com/gh/Brooooooklyn/node-crypto.svg?style=svg)](https://circleci.com/gh/Brooooooklyn/node-crypto)
+[![Build status](https://ci.appveyor.com/api/projects/status/bu0lymyenwi66rlt/branch/master?svg=true)](https://ci.appveyor.com/project/Brooooooklyn/node-crypto/branch/master)
+
 
 ## Dependencies
 Make sure you have rust installed in your environment. follow this link: https://www.rust-lang.org/en-US/install.html to install rust toolchains.
