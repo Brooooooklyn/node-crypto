@@ -3,9 +3,11 @@ native/artifacts.json
 native/index.node
 .circleci/
 Dockerfile
-upload.js
+tools/upload.js
 .editorconfig
 .travis.yml
 appveyor.yml
 yarn.lock
 dist
+*.node
+google-secret-file.json.enc
