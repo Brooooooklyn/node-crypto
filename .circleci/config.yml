@@ -110,6 +110,7 @@ jobs:
     working_directory: /mnt/crate
     steps:
       - checkout
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run:
           name: "Deploy to NPM"
           command: |
