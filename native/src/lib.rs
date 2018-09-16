@@ -13,10 +13,6 @@ use neon::prelude::*;
 use neon::types::{JsString, Value};
 use neon::context::{FunctionContext};
 
-trait CheckArgument<'a> {
-  fn check_argument<V: Value>(&mut self, i: i32) -> JsResult<'a, V>;
-}
-
 pub fn sha256(mut call: FunctionContext) -> JsResult<JsString> {
   let input = call.argument::<JsString>(0)?;
   let mut hasher = Sha256::new();
