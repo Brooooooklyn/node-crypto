@@ -104,6 +104,22 @@ jobs:
     docker:
       - image: broooooklyn/rust-with-node:10
 
+  npm_deploy:
+    docker:
+      - image: broooooklyn/rust-with-node:latest
+    working_directory: /mnt/crate
+    steps:
+      - checkout
+      - run:
+          name: "Deploy to NPM"
+          command: |
+            if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
+            then
+              npm publish
+            else
+              echo "Not a release, skipping publish"
+            fi
+
   nightly:
     machine: true
     triggers:
@@ -157,6 +173,16 @@ workflows:
       - deploy10:
           requires:
             - build10
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
+      - npm_deploy:
+          requires:
+            - deploy8
+            - deploy9
+            - deploy10
           filters:
             tags:
               only: /^v.*/
