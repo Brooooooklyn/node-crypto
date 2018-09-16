@@ -10,7 +10,7 @@ use crypto::sha2::Sha256;
 use crypto::md5::Md5;
 use ring::digest;
 use neon::prelude::*;
-use neon::types::{JsString, Value};
+use neon::types::{JsString};
 use neon::context::{FunctionContext};
 
 pub fn sha256(mut call: FunctionContext) -> JsResult<JsString> {
