@@ -6,7 +6,7 @@ try {
     fs.mkdirSync('./dist')
   }
 
-  fs.copyFileSync('./native/index.node', `./dist/${filename}`)
+  fs.copyFileSync('./native.node', `./dist/${filename}`)
 } catch (e) {
   console.error(e)
   process.exit(101)

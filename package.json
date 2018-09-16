@@ -13,10 +13,16 @@
     "semver": "^5.5.1"
   },
   "scripts": {
-    "build": "neon build --release",
+    "build": "cargo build --release && node ./copy-binary.js",
+    "build-debug": "cargo build && node ./copy-binary.js",
+    "gyp-build-release": "node-gyp build",
+    "gyp-build-debug": "node-gyp build --debug",
+    "configure-release": "node-gyp configure --verbose",
+    "configure-debug": "node-gyp configure --verbose --debug",
     "install": "node tools/download.js"
   },
   "devDependencies": {
+    "nan": "^2.11.0",
     "node-gyp": "^3.8.0"
   }
 }

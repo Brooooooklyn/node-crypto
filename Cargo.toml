@@ -10,11 +10,13 @@ name = "crypto"
 crate-type = ["dylib"]
 
 [build-dependencies]
+gcc = "0.3"
 neon-build = "0.2"
+regex = "1.0"
 
 [dependencies]
 ring = "0.13"
 hex = "0.3"
-rust-crypto = "0.2"
+md-5 = "0.8"
 neon = "0.2"
 neon-runtime = "0.2"

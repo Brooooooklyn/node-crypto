@@ -11,9 +11,6 @@ environment:
       ARC: "x64"
 
 install:
-  - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
-  - appveyor-tools\secure-file -decrypt .\google-secret-file.json.enc -secret %GOOGLE_CLOUD_STORAGE_CONFIG_TOKEN%
-  - SET GOOGLE_APPLICATION_CREDENTIALS=C:\projects\node-crypto\google-secret-file.json
   - IF "%BITS%" == "32" SET ARCH=i686
   - IF "%BITS%" == "64" SET ARCH=x86_64
   - curl -sSf -o rustup-init.exe https://win.rustup.rs
@@ -25,34 +22,23 @@ install:
   - ls
 
 cache:
-  - native/target
+  - target
 
 build_script:
   - ps: Install-Product node 8 $env:ARC
   - node -v
   - npm i -g npm
   - npm config set msvs_version 2015
-  - npm i -g --production windows-build-tools
   - npm i -g node-gyp
-  - yarn
-  - yarn build
-  - node tools\appveyor-scripts.js
-  - ps: Install-Product node 9 $env:ARC
-  - node -v
-  - npm i -g npm
-  - npm config set msvs_version 2015
-  - npm i -g --production windows-build-tools
-  - npm i -g node-gyp
-  - yarn
+  - yarn --ignore-scripts
   - yarn build
   - node tools\appveyor-scripts.js
   - ps: Install-Product node 10 $env:ARC
   - node -v
   - npm i -g npm
   - npm config set msvs_version 2015
-  - npm i -g --production windows-build-tools
   - npm i -g node-gyp
-  - yarn
+  - yarn --ignore-scripts
   - yarn build
   - node tools\appveyor-scripts.js
 
@@ -64,6 +50,9 @@ artifacts:
     name: Binary
 
 before_deploy:
+  - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+  - appveyor-tools\secure-file -decrypt .\google-secret-file.json.enc -secret %GOOGLE_CLOUD_STORAGE_CONFIG_TOKEN%
+  - SET GOOGLE_APPLICATION_CREDENTIALS=C:\projects\node-crypto\google-secret-file.json
   - node tools\upload.js
 
 deploy:
