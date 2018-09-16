@@ -12,7 +12,7 @@ environment:
 
 install:
   - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
-  - sh: ./appveyor-tools/secure-file -decrypt "./google-secret-file.json.enc" -secret $GOOGLE_CLOUD_STORAGE_CONFIG_TOKEN
+  - appveyor-tools\secure-file -decrypt .\google-secret-file.json.enc -secret %GOOGLE_CLOUD_STORAGE_CONFIG_TOKEN%
   - SET GOOGLE_APPLICATION_CREDENTIALS=C:\projects\node-crypto\google-secret-file.json
   - IF "%BITS%" == "32" SET ARCH=i686
   - IF "%BITS%" == "64" SET ARCH=x86_64
@@ -22,6 +22,7 @@ install:
   - rustc -Vv
   - cargo -Vv
   - yarn --ignore-scripts
+  - ls
 
 cache:
   - native/target

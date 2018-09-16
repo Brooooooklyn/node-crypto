@@ -17,6 +17,7 @@
     "install": "node tools/download.js"
   },
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "node-gyp": "^3.8.0"
   }
 }
