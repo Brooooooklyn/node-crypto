@@ -19,8 +19,11 @@ use neon::types::{JsBuffer, JsString, JsValue, JsUndefined};
 use buffer::NewFromContent;
 use string::GetUnicodeContent;
 
+#[derive(Clone, Copy)]
 pub struct CryptoHasher {
-  ctx: digest::Context,
+  pending: [u8; digest::MAX_BLOCK_LEN],
+  algorithm: &'static digest::Algorithm,
+  num_pending: usize,
 }
 
 declare_types! {
@@ -33,7 +36,9 @@ declare_types! {
         _ => &digest::SHA1,
       };
       Ok(CryptoHasher {
-        ctx: digest::Context::new(algorithm)
+        pending: [0u8; digest::MAX_BLOCK_LEN],
+        num_pending: 0,
+        algorithm,
       })
     }
 
@@ -42,25 +47,35 @@ declare_types! {
       {
         let mut this = cx.this();
         let guard = cx.lock();
-        let hasher = this.borrow_mut(&guard);
-        let mut ctx = hasher.ctx;
+        let mut hasher = this.borrow_mut(&guard);
         if value.is_a::<JsBuffer>() {
           let buffer = JsBuffer::from_raw(value.to_raw());
           let binary_data = buffer.borrow(&guard);
           let value = binary_data.deref();
-          ctx.update(value.as_slice());
+          let data = value.as_slice();
+          let num_pending = hasher.num_pending;
+          hasher.num_pending += data.len();
+          hasher.pending[num_pending..(num_pending + data.len())]
+            .copy_from_slice(data);
         };
         if value.is_a::<JsString>() {
           let string = JsString::from_raw(value.to_raw());
           let buffer = string.get_unicode_content();
-          ctx.update(&buffer);
+          let num_pending = hasher.num_pending;
+          hasher.num_pending += buffer.len();
+          hasher.pending[num_pending..(num_pending + buffer.len())]
+            .copy_from_slice(&buffer);
           mem::forget(buffer);
         }
         if value.is_a::<JsArrayBuffer>() {
           let buffer = JsArrayBuffer::from_raw(value.to_raw());
           let binary_data = buffer.borrow(&guard);
           let value = binary_data.deref();
-          ctx.update(value.as_slice());
+          let data = value.as_slice();
+          let num_pending = hasher.num_pending;
+          hasher.num_pending += data.len();
+          hasher.pending[num_pending..(num_pending + data.len())]
+            .copy_from_slice(data);
         }
       };
       Ok(cx.undefined().as_value(&mut cx))
@@ -72,9 +87,10 @@ declare_types! {
         let mut this = cx.this();
         let guard = cx.lock();
         let hasher = this.borrow(&guard);
-        let mut ctx = hasher.ctx;
-        let result = ctx.finish();
-        hex::encode(result)
+        let algorithm = hasher.algorithm;
+        let data = hasher.pending;
+        let hex = digest::digest(algorithm, &data[0..hasher.num_pending]);
+        hex::encode(hex)
       };
       if value.is_a::<JsUndefined>() {
         Ok(JsBuffer::new_from_content(hex.as_bytes()).as_value(&mut cx))

@@ -1,20 +1,19 @@
 const fs = require('fs')
 const Benchmark = require('benchmark')
-const { createHash } = require('crypto')
+const crypto = require('crypto')
 const { sha256 } = require('crypto-wasm')
 const { SHA256 } = require('crypto-js')
-const bindings = require('../index.node')
+const { createHash } = require('../index')
 
-const sha256Binding = bindings.sha256
 const suite = new Benchmark.Suite
 
-// const fixture = 'hello world!'
-const fixtureBuffer = fs.readFileSync('./bench/fixture.json')
-const fixture = fixtureBuffer.toString()
+const fixture = 'hello world!'
+// const fixtureBuffer = fs.readFileSync('./bench/fixture.json')
+// const fixture = fixtureBuffer.toString()
 
 suite.add('sha256#native', () => {
-  const hasher = createHash('sha256')
-  hasher.update(fixtureBuffer)
+  const hasher = crypto.createHash('sha256')
+  hasher.update(fixture)
   hasher.digest('hex')
 })
   .add('sha256#wasm', () => {
@@ -24,7 +23,9 @@ suite.add('sha256#native', () => {
     SHA256(fixture).toString()
   })
   .add('sha256#binding', () => {
-    sha256Binding(fixture)
+    const hasher = createHash('sha256')
+    hasher.update(fixture)
+    hasher.digest('hex')
   })
   .on('cycle', function(event) {
     console.log(String(event.target))
