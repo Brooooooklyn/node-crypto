@@ -9,3 +9,4 @@ dist
 build
 package-lock.json
 .vscode
+Cargo.lock

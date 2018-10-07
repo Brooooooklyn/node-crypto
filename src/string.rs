@@ -1,5 +1,4 @@
 use std::ops::Deref;
-use std::mem;
 
 use neon_runtime::raw::Local;
 use neon_runtime::string;
@@ -18,12 +17,12 @@ pub trait GetUnicodeContent {
 impl GetUnicodeContent for JsString {
   fn get_unicode_content(&self) -> JsChars {
     let local = self.to_raw();
-    let buffer_len = unsafe { string::utf8_len(local) as usize };
-    unsafe {
+    let chars = unsafe {
+      let buffer_len = string::utf8_len(local) as usize;
       let buffer = unicode_content(local);
-      let chars = Vec::from_raw_parts(buffer, buffer_len, buffer_len);
-      JsChars(chars)
-    }
+      Vec::from_raw_parts(buffer, buffer_len, buffer_len)
+    };
+    JsChars(chars)
   }
 }
 
@@ -31,7 +30,7 @@ impl GetUnicodeContent for JsString {
 pub struct JsChars(Vec<u8>);
 
 impl Drop for JsChars {
-  fn drop(&mut self) { }
+  fn drop(&mut self) {}
 }
 
 impl Deref for JsChars {

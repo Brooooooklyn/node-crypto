@@ -15,7 +15,7 @@ neon-build = "0.2"
 regex = "1.0"
 
 [dependencies]
-ring = "0.13"
+ring = { path = "../ring" }
 hex = "0.3"
 neon = "0.2"
 neon-runtime = "0.2"
