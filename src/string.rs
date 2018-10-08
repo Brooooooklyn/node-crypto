@@ -1,7 +1,7 @@
+use neon::handle::Managed;
+use neon::types::JsString;
 use neon_runtime::raw::Local;
 use neon_runtime::string;
-use neon::types::JsString;
-use neon::handle::Managed;
 
 extern "C" {
   #[link_name = "Node_Crypto_Get_V8_String_Unicode_Content"]

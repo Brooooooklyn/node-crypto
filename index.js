@@ -8,7 +8,7 @@ class Hasher {
 
   update(data) {
     if (ArrayBuffer.isView(data)) {
-      this.pending += (Buffer.from(data).toString('utf-8'))
+      this.pending += Buffer.from(data).toString('utf-8')
     } else if (typeof data === 'string') {
       this.pending += data
     }
@@ -22,5 +22,5 @@ class Hasher {
 module.exports = {
   createHash: function createHash(method) {
     return new Hasher(method)
-  }
+  },
 }

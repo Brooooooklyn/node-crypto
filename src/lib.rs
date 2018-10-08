@@ -1,8 +1,8 @@
 extern crate md5;
 #[macro_use]
 extern crate neon;
-extern crate neon_runtime;
 extern crate hex;
+extern crate neon_runtime;
 extern crate ring;
 
 mod string;
@@ -10,11 +10,11 @@ mod string;
 use std::mem;
 use std::ops::Deref;
 
-use ring::digest;
-use md5::{Md5, Digest};
+use md5::{Digest, Md5};
+use neon::context::FunctionContext;
 use neon::prelude::*;
-use neon::types::{JsString};
-use neon::context::{FunctionContext};
+use neon::types::JsString;
+use ring::digest;
 
 use string::GetUnicodeContent;
 
@@ -40,7 +40,7 @@ pub fn hash(mut call: FunctionContext) -> JsResult<JsValue> {
     };
     hex::encode(digest::digest(algorithm, &buffer))
   };
-  
+
   mem::forget(buffer);
   Ok(JsString::new(&mut call, hex.as_str()).as_value(&mut call))
 }

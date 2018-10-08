@@ -1,12 +1,12 @@
-extern crate neon_build;
 extern crate gcc;
+extern crate neon_build;
 extern crate regex;
 
-use std::process::Command;
+use regex::Regex;
 use std::env;
 use std::fs;
 use std::path::PathBuf;
-use regex::Regex;
+use std::process::Command;
 
 fn main() {
   neon_build::setup();
@@ -33,12 +33,15 @@ fn main() {
   let mut dist = PathBuf::from(env::current_dir().unwrap());
   dist.push("copy-binary.js");
   let code = format!(
-"
+                     "
 const fs = require('fs')
 const path = require('path')
 
 fs.copyFileSync(path.join('target', '{}' ,'{}'), path.join(process.cwd(), 'native.node'))
-", env::var("PROFILE").unwrap(), file_name);
+",
+                     env::var("PROFILE").unwrap(),
+                     file_name
+  );
   fs::write(dist, code).unwrap();
 }
 
@@ -70,11 +73,14 @@ fn parse_node_arch(node_gyp_output: &str) -> String {
 //   '-Dnode_root_dir=C:\\Users\\dherman\\.node-gyp\\8.3.0'
 fn parse_node_root_dir(node_gyp_output: &str) -> &str {
   let node_root_dir_flag_pattern = "'-Dnode_root_dir=";
-  let node_root_dir_start_index = node_gyp_output
-    .find(node_root_dir_flag_pattern)
-    .map(|i| i + node_root_dir_flag_pattern.len())
-    .expect(format!("Couldn't find node_root_dir in node-gyp output: {}.", node_gyp_output).as_str());
-  let node_root_dir_end_index = node_gyp_output[node_root_dir_start_index..].find("'").unwrap() + node_root_dir_start_index;
+  let node_root_dir_start_index =
+    node_gyp_output.find(node_root_dir_flag_pattern)
+                   .map(|i| i + node_root_dir_flag_pattern.len())
+                   .expect(format!("Couldn't find node_root_dir in node-gyp output: {}.",
+                                   node_gyp_output).as_str());
+  let node_root_dir_end_index = node_gyp_output[node_root_dir_start_index..].find("'")
+                                                                            .unwrap()
+                                + node_root_dir_start_index;
   &node_gyp_output[node_root_dir_start_index..node_root_dir_end_index]
 }
 
@@ -92,11 +98,13 @@ fn parse_node_root_dir(node_gyp_output: &str) -> &str {
 // processes it further.
 fn parse_node_lib_file(node_gyp_output: &str) -> &str {
   let node_lib_file_flag_pattern = "'-Dnode_lib_file=";
-  let node_lib_file_start_index = node_gyp_output
-    .find(node_lib_file_flag_pattern)
-    .map(|i| i + node_lib_file_flag_pattern.len())
-    .expect("Couldn't find node_lib_file in node-gyp output.");
-  let node_lib_file_end_index = node_gyp_output[node_lib_file_start_index..].find("'").unwrap() + node_lib_file_start_index;
+  let node_lib_file_start_index =
+    node_gyp_output.find(node_lib_file_flag_pattern)
+                   .map(|i| i + node_lib_file_flag_pattern.len())
+                   .expect("Couldn't find node_lib_file in node-gyp output.");
+  let node_lib_file_end_index = node_gyp_output[node_lib_file_start_index..].find("'")
+                                                                            .unwrap()
+                                + node_lib_file_start_index;
   &node_gyp_output[node_lib_file_start_index..node_lib_file_end_index]
 }
 
@@ -112,41 +120,53 @@ fn build_object_file() {
   }
 
   // Run `node-gyp configure` in verbose mode to read node_root_dir on Windows.
-  let output = npm()
-    .args(&["run", if debug() { "configure-debug" } else { "configure-release" }])
-    .output()
-    .expect("Failed to run \"node-gyp configure\" for node-crypto!");
+  let output = npm().args(&["run",
+                            if debug() {
+                              "configure-debug"
+                            } else {
+                              "configure-release"
+                            }])
+                    .output()
+                    .expect("Failed to run \"node-gyp configure\" for node-crypto!");
 
   if cfg!(windows) {
     let node_gyp_output = String::from_utf8_lossy(&output.stderr);
     println!("cargo:node_arch={}", parse_node_arch(&node_gyp_output));
-    println!("cargo:node_root_dir={}", parse_node_root_dir(&node_gyp_output));
-    println!("cargo:node_lib_file={}", parse_node_lib_file(&node_gyp_output));
+    println!("cargo:node_root_dir={}",
+             parse_node_root_dir(&node_gyp_output));
+    println!("cargo:node_lib_file={}",
+             parse_node_lib_file(&node_gyp_output));
   }
 
   // Run `node-gyp build`.
-  npm()
-    .args(&["run", if debug() { "gyp-build-debug" } else { "gyp-build-release" }])
-    .status()
-    .ok()
-    .expect("Failed to run \"node-gyp build\" for node-crypto!");
+  npm().args(&["run",
+               if debug() {
+                 "gyp-build-debug"
+               } else {
+                 "gyp-build-release"
+               }])
+       .status()
+       .ok()
+       .expect("Failed to run \"node-gyp build\" for node-crypto!");
 }
 
 // Link the built object file into a static library.
 fn link_library() {
   let configuration = if debug() { "Debug" } else { "Release" };
   let object_path = if cfg!(unix) {
-    format!("build/{}/obj.target/nodecrypto/src/node-crypto.o", configuration)
+    format!("build/{}/obj.target/nodecrypto/src/node-crypto.o",
+            configuration)
   } else {
     format!("build\\{}\\obj\\nodecrypto\\node-crypto.obj", configuration)
   };
 
-  gcc::Build::new().object(object_path).compile("libcryptonode.a");
+  gcc::Build::new().object(object_path)
+                   .compile("libcryptonode.a");
 }
 
 fn debug() -> bool {
   match env::var("DEBUG") {
     Ok(s) => s == "true",
-    Err(_) => false
+    Err(_) => false,
   }
 }
