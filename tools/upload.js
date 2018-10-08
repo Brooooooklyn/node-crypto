@@ -12,7 +12,9 @@ const storage = new Storage({ projectId })
 if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   const SECRET_FILE_PATH = path.join(process.env.HOME, 'google-secret-file.json')
 
-  const secretJson = process.env.GOOGLE_CLOUD_STORAGE_CONFIG ? JSON.parse(decodeURIComponent(process.env.GOOGLE_CLOUD_STORAGE_CONFIG)) : null
+  const secretJson = process.env.GOOGLE_CLOUD_STORAGE_CONFIG
+    ? JSON.parse(decodeURIComponent(process.env.GOOGLE_CLOUD_STORAGE_CONFIG))
+    : null
   if (secretJson) {
     fs.writeFileSync(SECRET_FILE_PATH, JSON.stringify(secretJson))
     process.env.GOOGLE_APPLICATION_CREDENTIALS = SECRET_FILE_PATH
@@ -20,7 +22,7 @@ if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
 }
 
 if (process.platform !== 'win32') {
-  execSync(`mkdir -p dist && cp ./native/index.node ./dist/${FILE_NAME}`, {
+  execSync(`mkdir -p dist && cp ./native.node ./dist/${FILE_NAME}`, {
     env: process.env,
     stdio: [0, 1, 2],
     cwd: process.cwd(),
@@ -28,17 +30,19 @@ if (process.platform !== 'win32') {
 }
 
 for (file of fs.readdirSync('./dist')) {
-  storage
-    .bucket('storage.lynvv.xyz')
-    .upload(`./dist/${file}`, {
+  storage.bucket('storage.lynvv.xyz').upload(
+    `./dist/${file}`,
+    {
       public: true,
       destination: file,
       resumable: false,
-    }, function (err) {
+    },
+    function(err) {
       if (err) {
-        console.error(`ERROR: fail to upload ${ FILE_NAME }`, err)
+        console.error(`ERROR: fail to upload ${FILE_NAME}`, err)
         process.exit(1)
       }
-      console.log(`${ FILE_NAME } uploaded.`)
-    })
+      console.log(`${FILE_NAME} uploaded.`)
+    },
+  )
 }

@@ -1,4 +1,4 @@
-native/target
+target
 *.node
 native/artifacts.json
 native/Cargo.lock
@@ -6,3 +6,7 @@ native/Cargo.lock
 **/node_modules
 **/.DS_Store
 dist
+build
+package-lock.json
+.vscode
+copy-binary.js
