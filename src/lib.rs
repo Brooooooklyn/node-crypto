@@ -5,8 +5,6 @@ extern crate hex;
 extern crate neon_runtime;
 extern crate ring;
 
-mod string;
-
 use std::mem;
 use std::ops::Deref;
 
@@ -16,15 +14,13 @@ use neon::prelude::*;
 use neon::types::JsString;
 use ring::digest;
 
-use string::GetUnicodeContent;
-
 pub fn hash(mut call: FunctionContext) -> JsResult<JsValue> {
   let algorithm = call.argument::<JsString>(0)?.value();
   let algorithm = algorithm.as_str();
 
   let input = call.argument::<JsString>(1)?;
   let input = input.deref();
-  let buffer = input.get_unicode_content();
+  let buffer = input.value();
 
   let hex = if algorithm == "md5" {
     let mut hasher = Md5::new();
@@ -38,7 +34,7 @@ pub fn hash(mut call: FunctionContext) -> JsResult<JsValue> {
       "sha512" => &digest::SHA512,
       _ => return call.throw_type_error(&format!("Unsupported algorithm {}", algorithm)),
     };
-    hex::encode(digest::digest(algorithm, &buffer))
+    hex::encode(digest::digest(algorithm, buffer.as_bytes()))
   };
 
   mem::forget(buffer);
