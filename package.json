@@ -15,12 +15,18 @@
   "scripts": {
     "build": "cargo build --release && node ./copy-binary.js",
     "build-debug": "cargo build && node ./copy-binary.js",
+    "configure-debug": "node-gyp configure --verbose --debug",
+    "configure-release": "node-gyp configure --verbose",
+    "gyp-build-release": "node-gyp build",
+    "gyp-build-debug": "node-gyp build --debug",
     "install": "node tools/download.js",
     "precommit": "cargo fmt -- --check && lint-staged"
   },
   "devDependencies": {
     "husky": "^1.1.1",
     "lint-staged": "^7.3.0",
+    "nan": "^2.11.0",
+    "node-gyp": "^3.8.0",
     "prettier": "^1.14.3"
   },
   "lint-staged": {
