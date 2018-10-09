@@ -6,6 +6,10 @@ const FILE_NAME = require('./filename')
 const HOST = 'https://storage.googleapis.com/storage.lynvv.xyz'
 const distFileName = 'native.node'
 
+if (process.env.SKIP_DOWNLOAD_PREBUILD) {
+  process.exit(0)
+}
+
 request
   .get(`${HOST}/${FILE_NAME}`)
   .pipe(fs.createWriteStream(distFileName))

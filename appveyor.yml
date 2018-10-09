@@ -16,6 +16,7 @@ install:
   - curl -sSf -o rustup-init.exe https://win.rustup.rs
   - rustup-init.exe --default-host "%ARCH%-pc-windows-msvc" --default-toolchain stable -y
   - SET PATH=%PATH%;C:\Users\appveyor\.cargo\bin
+  - SET SKIP_DOWNLOAD_PREBUILD=true
   - rustc -Vv
   - cargo -Vv
   - yarn --ignore-scripts
@@ -29,16 +30,18 @@ build_script:
   - node -v
   - npm i -g npm
   - npm config set msvs_version 2015
+  - npm i -g --production windows-build-tools
   - npm i -g node-gyp
-  - yarn --ignore-scripts
+  - yarn
   - yarn build
   - node tools\appveyor-scripts.js
   - ps: Install-Product node 10 $env:ARC
   - node -v
   - npm i -g npm
   - npm config set msvs_version 2015
+  - npm i -g --production windows-build-tools
   - npm i -g node-gyp
-  - yarn --ignore-scripts
+  - yarn
   - yarn build
   - node tools\appveyor-scripts.js
 
