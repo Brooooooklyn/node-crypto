@@ -7,10 +7,10 @@
   "license": "MIT",
   "types": "index.d.ts",
   "dependencies": {
-    "@google-cloud/storage": "^2.0.3",
+    "@google-cloud/storage": "^2.3.1",
     "neon-cli": "^0.2",
     "request": "^2.88.0",
-    "semver": "^5.5.1"
+    "semver": "^5.6.0"
   },
   "scripts": {
     "build": "cargo build --release && node ./copy-binary.js",
@@ -19,15 +19,14 @@
     "configure-release": "node-gyp configure --verbose",
     "gyp-build-release": "node-gyp build",
     "gyp-build-debug": "node-gyp build --debug",
-    "install": "node tools/download.js",
-    "precommit": "cargo fmt -- --check && lint-staged"
+    "install": "node tools/download.js"
   },
   "devDependencies": {
-    "husky": "^1.1.1",
-    "lint-staged": "^7.3.0",
-    "nan": "^2.11.0",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0",
+    "nan": "^2.11.1",
     "node-gyp": "^3.8.0",
-    "prettier": "^1.14.3"
+    "prettier": "^1.15.3"
   },
   "lint-staged": {
     "*.js": [
@@ -42,5 +41,10 @@
     "singleQuote": true,
     "arrowParens": "always",
     "parser": "typescript"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cargo fmt -- --check && lint-staged"
+    }
   }
 }
