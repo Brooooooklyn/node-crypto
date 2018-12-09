@@ -1,6 +1,6 @@
 {
   "name": "crypto-node",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "rust-crypto nodejs bindings",
   "main": "index.node",
   "author": "LongYinan <lynweklm@gmail.com>",
