@@ -1,3 +1,5 @@
+use std::slice;
+
 use neon::handle::Managed;
 use neon::types::JsString;
 use neon_runtime::raw::Local;
@@ -9,16 +11,16 @@ extern "C" {
 }
 
 pub trait GetUnicodeContent {
-  fn get_unicode_content(&self) -> Vec<u8>;
+  fn get_unicode_content(&self) -> &'static [u8];
 }
 
 impl GetUnicodeContent for JsString {
-  fn get_unicode_content(&self) -> Vec<u8> {
+  fn get_unicode_content(&self) -> &'static [u8] {
     let local = self.to_raw();
     unsafe {
       let buffer_len = string::utf8_len(local) as usize;
       let buffer = unicode_content(local);
-      Vec::from_raw_parts(buffer, buffer_len, buffer_len)
+      slice::from_raw_parts(buffer, buffer_len)
     }
   }
 }

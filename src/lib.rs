@@ -7,7 +7,6 @@ extern crate ring;
 
 mod string;
 
-use std::mem;
 use std::ops::Deref;
 
 use md5::{Digest, Md5};
@@ -28,7 +27,7 @@ pub fn hash(mut call: FunctionContext) -> JsResult<JsValue> {
 
   let hex = if algorithm == "md5" {
     let mut hasher = Md5::new();
-    hasher.input(&buffer);
+    hasher.input(buffer);
     hex::encode(hasher.result())
   } else {
     let algorithm = match algorithm {
@@ -41,7 +40,6 @@ pub fn hash(mut call: FunctionContext) -> JsResult<JsValue> {
     hex::encode(digest::digest(algorithm, &buffer))
   };
 
-  mem::forget(buffer);
   Ok(JsString::new(&mut call, hex.as_str()).as_value(&mut call))
 }
 

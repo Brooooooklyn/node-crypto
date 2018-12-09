@@ -1,4 +1,4 @@
-extern crate gcc;
+extern crate cc;
 extern crate neon_build;
 extern crate regex;
 
@@ -160,8 +160,8 @@ fn link_library() {
     format!("build\\{}\\obj\\nodecrypto\\node-crypto.obj", configuration)
   };
 
-  gcc::Build::new().object(object_path)
-                   .compile("libcryptonode.a");
+  cc::Build::new().object(object_path)
+                  .compile("libcryptonode.a");
 }
 
 fn debug() -> bool {
