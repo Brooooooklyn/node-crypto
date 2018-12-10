@@ -122,16 +122,6 @@ jobs:
               echo "Not a release, skipping publish"
             fi
 
-  nightly:
-    jobs:
-      - nightly_build
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
 workflows:
   version: 2
   build_all_versions:
@@ -168,3 +158,13 @@ workflows:
               only: /^v.*/
             branches:
               only: master
+  nightly:
+    jobs:
+      - nightly_build
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
