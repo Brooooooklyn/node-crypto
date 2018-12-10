@@ -93,6 +93,18 @@ jobs:
     docker:
       - image: broooooklyn/rust-with-node:10
 
+  nightly_build:
+    machine: true
+    steps:
+      - checkout
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker build . -t broooooklyn/rust-with-node:8 --build-arg NODE_VERSION=8
+      - run: docker push broooooklyn/rust-with-node:8
+      - run: docker build . -t broooooklyn/rust-with-node:10 --build-arg NODE_VERSION=10
+      - run: docker tag broooooklyn/rust-with-node:10 broooooklyn/rust-with-node:latest
+      - run: docker push broooooklyn/rust-with-node:10
+      - run: docker push broooooklyn/rust-with-node:latest
+
   npm_deploy:
     docker:
       - image: broooooklyn/rust-with-node:latest
@@ -111,7 +123,8 @@ jobs:
             fi
 
   nightly:
-    machine: true
+    jobs:
+      - nightly_build
     triggers:
       - schedule:
           cron: "0 0 * * *"
@@ -119,15 +132,6 @@ jobs:
             branches:
               only:
                 - master
-    steps:
-      - checkout
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker build . -t broooooklyn/rust-with-node:8 --build-arg NODE_VERSION=8
-      - run: docker push broooooklyn/rust-with-node:8
-      - run: docker build . -t broooooklyn/rust-with-node:10 --build-arg NODE_VERSION=10
-      - run: docker tag broooooklyn/rust-with-node:10 broooooklyn/rust-with-node:latest
-      - run: docker push broooooklyn/rust-with-node:10
-      - run: docker push broooooklyn/rust-with-node:latest
 workflows:
   version: 2
   build_all_versions:
