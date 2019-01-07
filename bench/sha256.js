@@ -8,7 +8,7 @@ const { createHash } = require('../index')
 const suite = new Benchmark.Suite()
 
 const fixture = chain()
-  .range(200)
+  .range(100)
   .map(() => `hello`)
   .join('')
   .value()
@@ -17,7 +17,7 @@ const fixtureBuffer = Buffer.from(fixture)
 suite
   .add('sha256#binding', () => {
     const hasher = createHash('sha256')
-    hasher.update(fixture)
+    hasher.update(fixtureBuffer)
     hasher.digest('hex')
   })
   .add('sha256#native', () => {
