@@ -10,11 +10,7 @@ use std::process::Command;
 
 fn main() {
   neon_build::setup();
-  // 1. Build the object file from source using node-gyp.
   build_object_file();
-
-  // 2. Link the library from the object file using gcc.
-  link_library();
 
   let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap();
   let ext = match target_os.as_str() {
@@ -148,20 +144,6 @@ fn build_object_file() {
        .status()
        .ok()
        .expect("Failed to run \"node-gyp build\" for node-crypto!");
-}
-
-// Link the built object file into a static library.
-fn link_library() {
-  let configuration = if debug() { "Debug" } else { "Release" };
-  let object_path = if cfg!(unix) {
-    format!("build/{}/obj.target/nodecrypto/src/node-crypto.o",
-            configuration)
-  } else {
-    format!("build\\{}\\obj\\nodecrypto\\node-crypto.obj", configuration)
-  };
-
-  cc::Build::new().object(object_path)
-                  .compile("libcryptonode.a");
 }
 
 fn debug() -> bool {
