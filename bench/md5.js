@@ -6,24 +6,24 @@ const bindings = require('../index')
 
 const fixture = 'hello world!'
 
-const md5Binding = bindings.md5
-const suite = new Benchmark.Suite
+const suite = new Benchmark.Suite()
 
-suite.add('md5#native', () => {
-  const hasher = createHash('md5')
-  hasher.update(fixture)
-  hasher.digest('hex')
-})
+suite
+  .add('md5#binding', () => {
+    const hasher = bindings.createHash('md5')
+    hasher.update(fixture)
+    hasher.digest('hex')
+  })
+  .add('md5#native', () => {
+    const hasher = createHash('md5')
+    hasher.update(fixture)
+    hasher.digest('hex')
+  })
   .add('md5#wasm', () => {
     md5(fixture)
   })
   .add('md5#js', () => {
     MD5(fixture).toString()
-  })
-  .add('md5#binding', () => {
-    const hasher = bindings.createHash('md5')
-    hasher.update(fixture)
-    hasher.digest('hex')
   })
   .on('cycle', function(event) {
     console.log(String(event.target))
