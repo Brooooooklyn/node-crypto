@@ -42,6 +42,14 @@ build_script:
   - yarn --ignore-scripts
   - yarn build
   - node tools\appveyor-scripts.js
+  - ps: Install-Product node 11 $env:ARC
+  - node -v
+  - npm i -g npm
+  - npm config set msvs_version 2015
+  - npm i -g node-gyp
+  - yarn --ignore-scripts
+  - yarn build
+  - node tools\appveyor-scripts.js
 
 after_test:
   - ls dist

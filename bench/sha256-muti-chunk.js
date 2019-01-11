@@ -1,40 +1,36 @@
 const Benchmark = require('benchmark')
 const crypto = require('crypto')
-const { sha256 } = require('crypto-wasm')
-const { SHA256 } = require('crypto-js')
 const { chain } = require('lodash')
-const { createHash, createHashClassHash } = require('../index')
+const { createHash } = require('../index')
 
 const suite = new Benchmark.Suite()
 
 const fixture = chain()
   .range(100)
-  .map(() => `hello`)
-  .join('')
+  .map(() => Buffer.from('hello'))
   .value()
-const fixtureBuffer = Buffer.from(fixture)
 
 suite
   .add('sha256#binding-js-class', () => {
     const hasher = createHash('sha256')
-    hasher.update(fixtureBuffer)
+    fixture.forEach((b) => {
+      hasher.update(b)
+    })
     hasher.digest('hex')
   })
   .add('sha256#binding-native-class', () => {
-    const hasher = createHashClassHash('sha256')
-    hasher.update(fixtureBuffer)
+    const hasher = createHash('sha256')
+    fixture.forEach((b) => {
+      hasher.update(b)
+    })
     hasher.digest('hex')
   })
   .add('sha256#native', () => {
     const hasher = crypto.createHash('sha256')
-    hasher.update(fixtureBuffer)
+    fixture.forEach((b) => {
+      hasher.update(b)
+    })
     hasher.digest('hex')
-  })
-  .add('sha256#wasm', () => {
-    sha256(fixture)
-  })
-  .add('sha256#js', () => {
-    SHA256(fixture).toString()
   })
   .on('cycle', function(event) {
     console.log(String(event.target))

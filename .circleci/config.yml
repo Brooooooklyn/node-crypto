@@ -83,6 +83,11 @@ jobs:
     docker:
       - image: broooooklyn/rust-with-node:10
 
+  build11:
+    <<: *build
+    docker:
+      - image: broooooklyn/rust-with-node:11
+
   deploy8:
     <<: *deploy
     docker:
@@ -93,6 +98,11 @@ jobs:
     docker:
       - image: broooooklyn/rust-with-node:10
 
+  deploy11:
+    <<: *deploy
+    docker:
+      - image: broooooklyn/rust-with-node:11
+
   nightly_build:
     machine: true
     steps:
@@ -101,8 +111,10 @@ jobs:
       - run: docker build . -t broooooklyn/rust-with-node:8 --build-arg NODE_VERSION=8
       - run: docker push broooooklyn/rust-with-node:8
       - run: docker build . -t broooooklyn/rust-with-node:10 --build-arg NODE_VERSION=10
-      - run: docker tag broooooklyn/rust-with-node:10 broooooklyn/rust-with-node:latest
       - run: docker push broooooklyn/rust-with-node:10
+      - run: docker build . -t broooooklyn/rust-with-node:11 --build-arg NODE_VERSION=11
+      - run: docker push broooooklyn/rust-with-node:11
+      - run: docker tag broooooklyn/rust-with-node:11 broooooklyn/rust-with-node:latest
       - run: docker push broooooklyn/rust-with-node:latest
 
   npm_deploy:
@@ -149,10 +161,22 @@ workflows:
               only: /^v.*/
             branches:
               only: master
+      - build11:
+          requires:
+            - cargo_fetch
+      - deploy11:
+          requires:
+            - build11
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
       - npm_deploy:
           requires:
             - deploy8
             - deploy10
+            - deploy11
           filters:
             tags:
               only: /^v.*/

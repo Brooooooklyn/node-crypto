@@ -6,19 +6,27 @@ extern crate neon_runtime;
 extern crate ring;
 
 use std::ops::Deref;
+use std::ptr;
+use std::slice;
 
 use md5::digest::generic_array::typenum::U16;
 use md5::digest::generic_array::GenericArray;
 use md5::{Digest, Md5};
 use neon::context::FunctionContext;
+use neon::handle::Managed;
 use neon::prelude::*;
 use neon::types::{JsArray, JsBuffer, JsString, JsValue};
+use neon_runtime::buffer;
 use ring::digest;
 
+#[derive(Clone)]
 pub enum Hasher {
   Md5(Md5),
   Sha2(digest::Context),
 }
+
+unsafe impl Send for Hasher {}
+unsafe impl Sync for Hasher {}
 
 #[derive(Debug)]
 pub enum AbstractDigest {
@@ -50,6 +58,58 @@ impl AsRef<[u8]> for AbstractDigest {
     match self {
       AbstractDigest::Md5(digest) => digest.as_ref(),
       AbstractDigest::Sha2(digest) => digest.as_ref(),
+    }
+  }
+}
+
+pub struct RustHasher {
+  ctx: Hasher,
+}
+
+declare_types! {
+  pub class JsHasher for RustHasher {
+    init(mut call) {
+      let algorithm = call.argument::<JsString>(0)?.value();
+      let algorithm = algorithm.as_str();
+      let ctx = if algorithm == "md5" {
+        Hasher::Md5(Md5::new())
+      } else {
+        let algorithm = match algorithm {
+          "sha256" => &digest::SHA256,
+          "sha1" => &digest::SHA1,
+          "sha384" => &digest::SHA384,
+          "sha512" => &digest::SHA512,
+          _ => return call.throw_type_error(&format!("Unsupported algorithm {}", algorithm)),
+        };
+        Hasher::Sha2(digest::Context::new(&algorithm))
+      };
+      Ok(RustHasher { ctx })
+    }
+
+    method update(mut call) {
+      let mut this = call.this();
+      let input = call.argument::<JsValue>(0)?;
+      call.borrow_mut(&mut this, move |mut hasher| {
+        let mut data_ptr = ptr::null_mut();
+        let mut len = 0;
+        unsafe {
+          buffer::data(&mut data_ptr, &mut len, input.to_raw());
+          let data = slice::from_raw_parts(data_ptr as *mut u8, len);
+          hasher.ctx.update(data);
+        };
+      });
+      Ok(call.undefined().upcast())
+    }
+
+    method digest(mut call) {
+      let this = call.this();
+      let ctx = call.borrow(&this, |hasher| {
+        hasher.ctx.clone()
+      });
+      let data = ctx.finish();
+      let hex = hex::encode(data.as_ref());
+
+      Ok(call.string(hex.as_str()).upcast())
     }
   }
 }
@@ -87,5 +147,6 @@ pub fn hash(mut call: FunctionContext) -> JsResult<JsValue> {
 
 register_module!(mut m, {
   m.export_function("hash", hash)?;
+  m.export_class::<JsHasher>("JsHasher")?;
   Ok(())
 });
