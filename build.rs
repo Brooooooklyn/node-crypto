@@ -58,7 +58,10 @@ fn npm() -> Command {
 //
 //   gyp info using node@8.3.0 | win32 | x64
 fn parse_node_arch(node_gyp_output: &str) -> String {
-  let version_regex = Regex::new(r"node@(?P<version>\d+\.\d+\.\d+)\s+\|\s+(?P<platform>\w+)\s+\|\s(?P<arch>ia32|x64)").unwrap();
+  let version_regex = Regex::new(
+    r"node@(?P<version>\d+\.\d+\.\d+)\s+\|\s+(?P<platform>\w+)\s+\|\s(?P<arch>ia32|x64)",
+  )
+  .unwrap();
   let captures = version_regex.captures(&node_gyp_output).unwrap();
   String::from(&captures["arch"])
 }

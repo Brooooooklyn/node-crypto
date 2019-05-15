@@ -15,7 +15,7 @@ use md5::{Digest, Md5};
 use neon::context::FunctionContext;
 use neon::handle::Managed;
 use neon::prelude::*;
-use neon::types::{JsArray, JsBuffer, JsString, JsValue};
+use neon::types::{JsBuffer, JsString, JsValue};
 use neon_runtime::buffer;
 use ring::digest;
 
@@ -118,8 +118,7 @@ pub fn hash(mut call: FunctionContext) -> JsResult<JsValue> {
   let algorithm = call.argument::<JsString>(0)?.value();
   let algorithm = algorithm.as_str();
 
-  let inputs = call.argument::<JsArray>(1)?;
-  let inputs = inputs.to_vec(&mut call)?;
+  let inputs = call.argument::<JsBuffer>(1)?;
   let mut ctx = if algorithm == "md5" {
     Hasher::Md5(Md5::new())
   } else {
@@ -132,13 +131,11 @@ pub fn hash(mut call: FunctionContext) -> JsResult<JsValue> {
     };
     Hasher::Sha2(digest::Context::new(&algorithm))
   };
-  for buffer in inputs {
-    let input = buffer.downcast::<JsBuffer>().unwrap();
-    call.borrow(&input, |data| {
-          let d = data.deref();
-          ctx.update(d.as_slice());
-        });
-  }
+  let buf = inputs.downcast::<JsBuffer>().unwrap();
+  call.borrow(&buf, |data| {
+        let d = data.deref();
+        ctx.update(d.as_slice());
+      });
   let data = ctx.finish();
   let hex = hex::encode(data.as_ref());
 

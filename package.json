@@ -44,7 +44,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "cargo fmt -- --check && lint-staged"
+      "pre-commit": "cargo +nightly fmt -- --check && lint-staged"
     }
   }
 }
