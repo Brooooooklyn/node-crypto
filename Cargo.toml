@@ -16,7 +16,7 @@ regex = "1.1"
 
 [dependencies]
 ring = "0.14.0-alpha4"
-hex = "0.3"
+hex = "0.4"
 md-5 = "0.8"
 neon = "0.2"
 neon-runtime = "0.2"
