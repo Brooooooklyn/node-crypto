@@ -15,7 +15,7 @@ neon-build = "0.2"
 regex = "1.1"
 
 [dependencies]
-ring = "0.14.0-alpha4"
+ring = "0.17.0-alpha.2"
 hex = "0.3"
 md-5 = "0.8"
 neon = "0.2"
